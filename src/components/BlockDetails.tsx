@@ -21,7 +21,7 @@ const BlockDetails: React.FC = () => {
             <SelectValue placeholder="选择一个区块" />
           </SelectTrigger>
           <SelectContent>
-            {mainChain?.blocks.map((block, index) => (
+            {mainChain?.blocks.map((block) => (
               <SelectItem key={block.hash} value={block.hash}>
                 区块 {block.index}
               </SelectItem>

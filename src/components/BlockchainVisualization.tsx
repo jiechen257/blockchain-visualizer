@@ -30,7 +30,7 @@ const BlockchainVisualization: React.FC = () => {
     const svg = d3.select(svgRef.current);
     svg.selectAll('*').remove();
 
-    const { width, height } = dimensions;
+    const { height } = dimensions;
     const blockWidth = 200;
     const blockHeight = 100;
     const blockSpacing = 40;
@@ -57,7 +57,7 @@ const BlockchainVisualization: React.FC = () => {
       .data(mainChain.blocks)
       .enter()
       .append('g')
-      .attr('transform', (d, i) => `translate(${i * (blockWidth + blockSpacing)}, ${height / 2 - blockHeight / 2})`);
+      .attr('transform', (_d, i) => `translate(${i * (blockWidth + blockSpacing)}, ${height / 2 - blockHeight / 2})`);
 
     blocks
       .append('rect')
@@ -101,7 +101,7 @@ const BlockchainVisualization: React.FC = () => {
       .style('fill', '#718096');
 
     blocks
-      .filter((d, i) => i > 0)
+      .filter((_d, i) => i > 0)
       .append('line')
       .attr('x1', -blockSpacing)
       .attr('y1', blockHeight / 2)

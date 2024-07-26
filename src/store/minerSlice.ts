@@ -1,6 +1,6 @@
 import { StateCreator } from 'zustand';
 import { v4 as uuidv4 } from 'uuid';
-import { BlockchainState, Miner, Block } from './types';
+import { BlockchainState, Miner } from './types';
 import { BlockchainSlice } from './blockchainSlice';
 import { createNewBlock } from '../utils/blockchain';
 
