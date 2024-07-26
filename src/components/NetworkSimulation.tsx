@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useBlockchainStore } from '../store/useBlockchainStore';
+import { Button } from "@/components/ui/button"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Switch } from "@/components/ui/switch"
 
 const NetworkSimulation: React.FC = () => {
   const { wallets, addTransaction } = useBlockchainStore();
   const [isSimulating, setIsSimulating] = useState(false);
   const [simulationSpeed, setSimulationSpeed] = useState(1000);
 
-  // 模拟网络交易
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (isSimulating) {
@@ -32,39 +36,37 @@ const NetworkSimulation: React.FC = () => {
   }, [isSimulating, simulationSpeed, wallets, addTransaction]);
 
   return (
-    <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-      <div className="px-4 py-5 sm:px-6">
-        <h3 className="text-lg leading-6 font-medium text-gray-900">网络模拟</h3>
-      </div>
-      <div className="border-t border-gray-200">
-        <div className="px-4 py-5 sm:p-6">
-          <div className="flex items-center justify-between">
-            <button
-              onClick={() => setIsSimulating(!isSimulating)}
-              className={`px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white ${
-                isSimulating ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700'
-              } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
-            >
+    <Card>
+      <CardHeader>
+        <CardTitle>网络模拟</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="flex items-center justify-between space-x-4">
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="simulation-switch"
+              checked={isSimulating}
+              onCheckedChange={setIsSimulating}
+            />
+            <Label htmlFor="simulation-switch">
               {isSimulating ? '停止模拟' : '开始模拟'}
-            </button>
-            <div className="flex items-center">
-              <label htmlFor="simulation-speed" className="mr-2 text-sm font-medium text-gray-700">
-                速度 (毫秒):
-              </label>
-              <input
-                type="number"
-                id="simulation-speed"
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                value={simulationSpeed}
-                onChange={(e) => setSimulationSpeed(Number(e.target.value))}
-                min="100"
-                step="100"
-              />
-            </div>
+            </Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Label htmlFor="simulation-speed">速度 (毫秒):</Label>
+            <Input
+              id="simulation-speed"
+              type="number"
+              value={simulationSpeed}
+              onChange={(e) => setSimulationSpeed(Number(e.target.value))}
+              min="100"
+              step="100"
+              className="w-24"
+            />
           </div>
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 

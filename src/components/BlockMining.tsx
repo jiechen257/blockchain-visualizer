@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import { useBlockchainStore } from '../store/useBlockchainStore';
+import { Button } from "@/components/ui/button"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Label } from "@/components/ui/label"
 
 const BlockMining: React.FC = () => {
   const { blockchain, wallets, minePendingTransactions } = useBlockchainStore();
@@ -12,37 +16,33 @@ const BlockMining: React.FC = () => {
   };
 
   return (
-    <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-      <div className="px-4 py-5 sm:px-6">
-        <h3 className="text-lg leading-6 font-medium text-gray-900">区块挖掘</h3>
-      </div>
-      <div className="border-t border-gray-200">
-        <div className="px-4 py-5 sm:p-6">
-          <div className="mb-4">
-            <label htmlFor="miningRewardAddress" className="block text-sm font-medium text-gray-700">挖矿奖励地址</label>
-            <select
-              id="miningRewardAddress"
-              className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md bg-white"
-              value={miningRewardAddress}
-              onChange={(e) => setMiningRewardAddress(e.target.value)}
-            >
-              <option value="">选择钱包</option>
-              {wallets.map((wallet) => (
-                <option key={wallet.address} value={wallet.address}>
-                  {wallet.address} ({wallet.balance} 币)
-                </option>
-              ))}
-            </select>
+    <Card>
+      <CardHeader>
+        <CardTitle>区块挖掘</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="miningRewardAddress">挖矿奖励地址</Label>
+            <Select onValueChange={setMiningRewardAddress} value={miningRewardAddress}>
+              <SelectTrigger id="miningRewardAddress">
+                <SelectValue placeholder="选择钱包" />
+              </SelectTrigger>
+              <SelectContent>
+                {wallets.map((wallet) => (
+                  <SelectItem key={wallet.address} value={wallet.address}>
+                    {wallet.address} ({wallet.balance} 币)
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
-          <button
-            onClick={handleMineBlock}
-            className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
-          >
+          <Button onClick={handleMineBlock} className="w-full">
             挖掘新区块
-          </button>
+          </Button>
           <div className="mt-4">
-            <h4 className="font-bold">区块链:</h4>
-            <ul className="mt-2 space-y-2">
+            <h4 className="font-bold mb-2">区块链:</h4>
+            <ul className="space-y-2">
               {blockchain.map((block) => (
                 <li key={block.hash} className="text-sm">
                   <span className="font-medium">区块 {block.index}:</span>{' '}
@@ -54,8 +54,8 @@ const BlockMining: React.FC = () => {
             </ul>
           </div>
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 

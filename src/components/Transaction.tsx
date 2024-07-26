@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
 import { useBlockchainStore } from '../store/useBlockchainStore';
+import { Button } from "@/components/ui/button"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 
 const Transaction: React.FC = () => {
   const [from, setFrom] = useState('');
@@ -28,77 +33,66 @@ const Transaction: React.FC = () => {
   };
 
   return (
-    <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-      <div className="px-4 py-5 sm:px-6">
-        <h3 className="text-lg leading-6 font-medium text-gray-900">创建交易</h3>
-      </div>
-      <div className="border-t border-gray-200">
-        <div className="px-4 py-5 sm:p-6">
-          <div className="grid grid-cols-1 gap-6">
-            <div>
-              <label htmlFor="from" className="block text-sm font-medium text-gray-700">从</label>
-              <select
-                id="from"
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md bg-white"
-                value={from}
-                onChange={(e) => setFrom(e.target.value)}
-              >
-                <option value="">选择发送钱包</option>
+    <Card>
+      <CardHeader>
+        <CardTitle>创建交易</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="from">从</Label>
+            <Select onValueChange={setFrom} value={from}>
+              <SelectTrigger id="from">
+                <SelectValue placeholder="选择发送钱包" />
+              </SelectTrigger>
+              <SelectContent>
                 {wallets.map((wallet) => (
-                  <option key={wallet.address} value={wallet.address}>
+                  <SelectItem key={wallet.address} value={wallet.address}>
                     {wallet.address} ({wallet.balance} 币)
-                  </option>
+                  </SelectItem>
                 ))}
-              </select>
-            </div>
-            <div>
-              <label htmlFor="to" className="block text-sm font-medium text-gray-700">到</label>
-              <select
-                id="to"
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md bg-white"
-                value={to}
-                onChange={(e) => setTo(e.target.value)}
-              >
-                <option value="">选择接收钱包</option>
-                {wallets.map((wallet) => (
-                  <option key={wallet.address} value={wallet.address}>
-                    {wallet.address} ({wallet.balance} 币)
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label htmlFor="amount" className="block text-sm font-medium text-gray-700">金额</label>
-              <input
-                type="number"
-                id="amount"
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                value={amount}
-                onChange={(e) => setAmount(Number(e.target.value))}
-              />
-            </div>
-            <div>
-              <label htmlFor="fee" className="block text-sm font-medium text-gray-700">手续费</label>
-              <input
-                type="number"
-                id="fee"
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                value={fee}
-                onChange={(e) => setFee(Number(e.target.value))}
-              />
-            </div>
-            <div>
-              <button
-                onClick={handleTransaction}
-                className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                发送交易
-              </button>
-            </div>
+              </SelectContent>
+            </Select>
           </div>
+          <div className="space-y-2">
+            <Label htmlFor="to">到</Label>
+            <Select onValueChange={setTo} value={to}>
+              <SelectTrigger id="to">
+                <SelectValue placeholder="选择接收钱包" />
+              </SelectTrigger>
+              <SelectContent>
+                {wallets.map((wallet) => (
+                  <SelectItem key={wallet.address} value={wallet.address}>
+                    {wallet.address} ({wallet.balance} 币)
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="amount">金额</Label>
+            <Input 
+              id="amount" 
+              type="number" 
+              value={amount} 
+              onChange={(e) => setAmount(Number(e.target.value))}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="fee">手续费</Label>
+            <Input 
+              id="fee" 
+              type="number" 
+              value={fee} 
+              onChange={(e) => setFee(Number(e.target.value))}
+            />
+          </div>
+          <Button onClick={handleTransaction} className="w-full">
+            发送交易
+          </Button>
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 
