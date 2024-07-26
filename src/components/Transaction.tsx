@@ -1,17 +1,19 @@
+// src/components/Transaction.tsx
+
 import React, { useState } from 'react';
 import useBlockchainStore from '@/store/useBlockchainStore';
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import WalletSelect from './WalletSelect';
 
 const Transaction: React.FC = () => {
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [amount, setAmount] = useState(0);
   const [fee, setFee] = useState(0);
-  const { wallets, signTransaction, addPendingTransaction } = useBlockchainStore();
+  const { signTransaction, addPendingTransaction } = useBlockchainStore();
 
   const handleTransaction = () => {
     if (from && to && amount > 0 && fee >= 0) {
@@ -33,36 +35,18 @@ const Transaction: React.FC = () => {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="from">从</Label>
-            <Select onValueChange={setFrom} value={from}>
-              <SelectTrigger id="from">
-                <SelectValue placeholder="选择发送钱包" />
-              </SelectTrigger>
-              <SelectContent>
-                {wallets.map((wallet) => (
-                  <SelectItem key={wallet.address} value={wallet.address}>
-                    {wallet.address} ({wallet.balance} 币)
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="to">到</Label>
-            <Select onValueChange={setTo} value={to}>
-              <SelectTrigger id="to">
-                <SelectValue placeholder="选择接收钱包" />
-              </SelectTrigger>
-              <SelectContent>
-                {wallets.map((wallet) => (
-                  <SelectItem key={wallet.address} value={wallet.address}>
-                    {wallet.address} ({wallet.balance} 币)
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+          <WalletSelect
+            value={from}
+            onValueChange={setFrom}
+            placeholder="选择发送钱包"
+            label="从"
+          />
+          <WalletSelect
+            value={to}
+            onValueChange={setTo}
+            placeholder="选择接收钱包"
+            label="到"
+          />
           <div className="space-y-2">
             <Label htmlFor="amount">金额</Label>
             <Input 
