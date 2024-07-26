@@ -1,34 +1,28 @@
 import React, { useState } from 'react';
-import { useBlockchainStore } from '../store/useBlockchainStore';
-import { Button } from "@/components/ui/button"
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import useBlockchainStore from '@/store/useBlockchainStore';
+import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const Transaction: React.FC = () => {
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [amount, setAmount] = useState(0);
   const [fee, setFee] = useState(0);
-  const { wallets, addTransaction, updateWalletBalance } = useBlockchainStore();
+  const { wallets, signTransaction, addPendingTransaction } = useBlockchainStore();
 
   const handleTransaction = () => {
     if (from && to && amount > 0 && fee >= 0) {
-      const transaction = { 
-        from, 
-        to, 
-        amount, 
-        fee, 
-        timestamp: Date.now() 
-      };
-      addTransaction(transaction);
-      updateWalletBalance(from, -(amount + fee));
-      updateWalletBalance(to, amount);
-      setFrom('');
-      setTo('');
-      setAmount(0);
-      setFee(0);
+      const signedTransaction = signTransaction(from, to, amount);
+      if (signedTransaction) {
+        addPendingTransaction({ ...signedTransaction, fee });
+        setFrom('');
+        setTo('');
+        setAmount(0);
+        setFee(0);
+      }
     }
   };
 

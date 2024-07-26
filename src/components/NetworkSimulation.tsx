@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useBlockchainStore } from '../store/useBlockchainStore';
-import { Button } from "@/components/ui/button"
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
+import useBlockchainStore from '@/store/useBlockchainStore';
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 
 const NetworkSimulation: React.FC = () => {
-  const { wallets, addTransaction } = useBlockchainStore();
+  const { wallets, addPendingTransaction } = useBlockchainStore();
   const [isSimulating, setIsSimulating] = useState(false);
   const [simulationSpeed, setSimulationSpeed] = useState(1000);
 
@@ -21,7 +20,7 @@ const NetworkSimulation: React.FC = () => {
           const amount = Math.floor(Math.random() * 10) + 1;
           const fee = Math.floor(Math.random() * 2) + 1;
           if (fromWallet.balance >= amount + fee) {
-            addTransaction({
+            addPendingTransaction({
               from: fromWallet.address,
               to: toWallet.address,
               amount,
@@ -33,7 +32,7 @@ const NetworkSimulation: React.FC = () => {
       }, simulationSpeed);
     }
     return () => clearInterval(interval);
-  }, [isSimulating, simulationSpeed, wallets, addTransaction]);
+  }, [isSimulating, simulationSpeed, wallets, addPendingTransaction]);
 
   return (
     <Card>
