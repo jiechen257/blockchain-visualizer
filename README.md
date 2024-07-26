@@ -1,23 +1,23 @@
-# Blockchain Visualization System
-
 ## Project Overview
 
-This is a web-based blockchain visualization tool designed to help users understand the basic concepts and mechanisms of blockchain technology. The project is built using React.js, TypeScript, Zustand, and D3.js, providing an interactive interface to demonstrate core blockchain functionalities.
+This Blockchain Visualization System is an interactive web application designed to help users understand the fundamental concepts and mechanisms of blockchain technology. It provides a visual and hands-on approach to learning about wallets, transactions, mining, and the overall structure of a blockchain.
 
 ## Features
 
-- Wallet Management: Create and manage cryptocurrency wallets
-- Transaction System: Simulate cryptocurrency transactions
-- Block Mining: Implementation of a basic Proof of Work (PoW) mining algorithm
-- Blockchain Visualization: Visual representation of the blockchain structure using D3.js
-- Local Storage: Blockchain data persistence using browser's localStorage
+- **Wallet Management**: Create and manage cryptocurrency wallets.
+- **Transaction System**: Simulate cryptocurrency transactions between wallets.
+- **Block Mining**: Implement a basic Proof of Work (PoW) mining algorithm.
+- **Blockchain Visualization**: Visually represent the blockchain structure.
+- **Fork Simulation**: Demonstrate blockchain forks and resolution.
+- **Network Simulation**: Simulate network behavior with automatic transaction generation.
+- **Interactive Tutorial**: Guide new users through the system's features.
 
-## Tech Stack
+## Technology Stack
 
 - React.js
 - TypeScript
+- D3.js (Data Visualization)
 - Zustand (State Management)
 - Tailwind CSS (Styling)
-- D3.js (Data Visualization)
+- shadcn/ui (Components Library)
 - Vite (Build Tool)
-- pnpm (Package Manager)
