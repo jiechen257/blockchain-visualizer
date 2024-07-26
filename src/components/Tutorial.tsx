@@ -1,7 +1,5 @@
-// src/components/Tutorial.tsx
-
 import React, { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
 const tutorialSteps = [
@@ -31,12 +29,18 @@ const tutorialSteps = [
   },
 ];
 
-const Tutorial: React.FC = () => {
+interface TutorialProps {
+  onComplete: () => void;
+}
+
+const Tutorial: React.FC<TutorialProps> = ({ onComplete }) => {
   const [currentStep, setCurrentStep] = useState(0);
 
   const nextStep = () => {
     if (currentStep < tutorialSteps.length - 1) {
       setCurrentStep(currentStep + 1);
+    } else {
+      onComplete();
     }
   };
 
@@ -47,19 +51,22 @@ const Tutorial: React.FC = () => {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>区块链教程</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <h3 className="text-lg font-semibold mb-2">{tutorialSteps[currentStep].title}</h3>
-        <p className="mb-4">{tutorialSteps[currentStep].content}</p>
-        <div className="flex justify-between">
+    <Dialog open={true}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{tutorialSteps[currentStep].title}</DialogTitle>
+          <DialogDescription>
+            {tutorialSteps[currentStep].content}
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
           <Button onClick={prevStep} disabled={currentStep === 0}>上一步</Button>
-          <Button onClick={nextStep} disabled={currentStep === tutorialSteps.length - 1}>下一步</Button>
-        </div>
-      </CardContent>
-    </Card>
+          <Button onClick={nextStep}>
+            {currentStep === tutorialSteps.length - 1 ? '完成' : '下一步'}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 };
 
