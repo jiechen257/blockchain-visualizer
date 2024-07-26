@@ -4,6 +4,8 @@ import Wallet from './components/Wallet';
 import Transaction from './components/Transaction';
 import BlockMining from './components/BlockMining';
 import BlockchainVisualization from './components/BlockchainVisualization';
+import BlockDetails from './components/BlockDetails';
+import NetworkSimulation from './components/NetworkSimulation';
 
 const App: React.FC = () => {
   return (
@@ -15,11 +17,15 @@ const App: React.FC = () => {
         </div>
         <div className="space-y-4">
           <BlockMining />
+          <BlockDetails />
         </div>
       </div>
-      <div className="mt-8">
-        <h2 className="text-2xl font-bold mb-4">Blockchain Visualization</h2>
-        <BlockchainVisualization />
+      <div className="mt-8 space-y-4">
+        <NetworkSimulation />
+        <div>
+          <h2 className="text-2xl font-bold mb-4">Blockchain Visualization</h2>
+          <BlockchainVisualization />
+        </div>
       </div>
     </Layout>
   );
