@@ -26,21 +26,21 @@ const App: React.FC = () => {
 
   return (
     <Layout>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="space-y-6">
-          <div className="h-[400px]">
-            <Wallet />
+      <div className="container mx-auto px-4 space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="space-y-6">
+            <div className="h-[400px] md:h-[500px] w-full">
+              <Wallet />
+            </div>
+            <Transaction />
           </div>
-          <Transaction />
-        </div>
-        <div className="space-y-6">
-          <div className="h-[400px]">
-            <BlockMining />
+          <div className="space-y-6">
+            <div className="h-[400px] md:h-[500px] w-full">
+              <BlockMining />
+            </div>
+            <BlockDetails />
           </div>
-          <BlockDetails />
         </div>
-      </div>
-      <div className="mt-6 space-y-6">
         <NetworkSimulation />
         <BlockchainVisualization />
         <BlockchainForkVisualization />
