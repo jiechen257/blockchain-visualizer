@@ -8,8 +8,8 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-      <div className="min-h-screen bg-slate-50 text-slate-950">
-        <header className="border-b border-slate-200 bg-white/80 backdrop-blur">
+      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(6,182,212,0.18),_transparent_32%),linear-gradient(180deg,_#f8fbfd_0%,_#eef4f7_100%)] text-slate-950">
+        <header className="border-b border-white/60 bg-white/70 backdrop-blur-xl">
           <div className="mx-auto flex w-full max-w-7xl items-center px-4 py-4 sm:px-6 lg:px-8">
             <div className="flex items-center">
               <img

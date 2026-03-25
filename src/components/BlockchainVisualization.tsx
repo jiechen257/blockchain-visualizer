@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import useBlockchainStore from '@/store/useBlockchainStore';
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
+import { Button } from '@/components/ui/button';
 
 const BlockchainVisualization: React.FC = () => {
   const svgRef = useRef<SVGSVGElement | null>(null);
-  const { chains } = useBlockchainStore();
+  const { chains, selectedBlockHash, setSelectedBlockHash } = useBlockchainStore();
   const [dimensions, setDimensions] = useState({ width: 0, height: 400 });
 
   useEffect(() => {
@@ -31,9 +32,9 @@ const BlockchainVisualization: React.FC = () => {
     svg.selectAll('*').remove();
 
     const { height } = dimensions;
-    const blockWidth = 200;
-    const blockHeight = 100;
-    const blockSpacing = 40;
+    const blockWidth = 220;
+    const blockHeight = 116;
+    const blockSpacing = 44;
 
     const mainChain = chains.find(chain => chain.isMain);
     if (!mainChain) return;
@@ -44,13 +45,13 @@ const BlockchainVisualization: React.FC = () => {
 
     const container = svg.append('g');
 
-    const zoom = d3.zoom()
+    const zoom = d3.zoom<SVGSVGElement, unknown>()
       .scaleExtent([0.5, 3])
       .on('zoom', (event) => {
         container.attr('transform', event.transform);
       });
 
-    svg.call(zoom as any);
+    svg.call(zoom);
 
     const blocks = container
       .selectAll('g')
@@ -63,11 +64,11 @@ const BlockchainVisualization: React.FC = () => {
       .append('rect')
       .attr('width', blockWidth)
       .attr('height', blockHeight)
-      .attr('fill', 'white')
-      .attr('stroke', '#4a5568')
-      .attr('stroke-width', 2)
-      .attr('rx', 10)
-      .attr('ry', 10);
+      .attr('fill', (d) => (d.hash === selectedBlockHash ? '#ccfbf1' : d === mainChain.blocks.at(-1) ? '#ecfeff' : '#ffffff'))
+      .attr('stroke', (d) => (d.hash === selectedBlockHash ? '#0f766e' : '#94a3b8'))
+      .attr('stroke-width', (d) => (d.hash === selectedBlockHash ? 3 : 2))
+      .attr('rx', 18)
+      .attr('ry', 18);
 
     blocks
       .append('text')
@@ -125,16 +126,28 @@ const BlockchainVisualization: React.FC = () => {
       .attr('d', 'M0,-5L10,0L0,5')
       .attr('fill', '#4a5568');
 
-  }, [chains, dimensions]);
+  }, [chains, dimensions, selectedBlockHash]);
 
   return (
-    <Card>
+    <Card className="rounded-[28px] border-slate-200/80 bg-white/90 shadow-sm ring-1 ring-slate-200/70">
       <CardHeader>
-        <CardTitle>区块链可视化</CardTitle>
+        <CardTitle className="text-xl">区块链可视化</CardTitle>
+        <CardDescription>主链会高亮最新区块，点击下方按钮可切换结构化详情视图。</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="overflow-x-auto">
           <svg ref={svgRef} className="w-full" style={{ minWidth: '100%', height: '400px' }}></svg>
+        </div>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {(chains.find((chain) => chain.isMain)?.blocks ?? []).map((block) => (
+            <Button
+              key={block.hash}
+              variant={selectedBlockHash === block.hash ? 'default' : 'outline'}
+              onClick={() => setSelectedBlockHash(block.hash)}
+            >
+              区块 {block.index}
+            </Button>
+          ))}
         </div>
       </CardContent>
     </Card>

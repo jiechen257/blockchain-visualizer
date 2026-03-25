@@ -28,8 +28,8 @@ describe('experienceSlice', () => {
 
     const activityFeed = useBlockchainStore.getState().activityFeed;
     expect(activityFeed).toHaveLength(20);
-    expect(activityFeed[0].title).toBe('wallet 1');
-    expect(activityFeed[19].title).toBe('wallet 20');
+    expect(activityFeed[0].title).toBe('wallet 20');
+    expect(activityFeed[19].title).toBe('wallet 1');
   });
 
   it('does not persist experience state fields into localStorage', () => {

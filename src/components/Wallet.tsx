@@ -7,7 +7,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 const abbreviateAddress = (address: string) => `${address.slice(0, 8)}…${address.slice(-8)}`;
 
 const Wallet: React.FC = () => {
-  const { wallets, createWallet } = useBlockchainStore();
+  const { wallets, createWallet, setFocusedAction, setPreferredMinerAddress } = useBlockchainStore();
   const totalBalance = wallets.reduce((acc, wallet) => acc + wallet.balance, 0);
 
   const renderEmptyState = () => (
@@ -38,23 +38,35 @@ const Wallet: React.FC = () => {
         </div>
         <p className="text-2xl font-semibold text-slate-900">{wallet.balance} 币</p>
         <p className="text-sm font-medium text-slate-600">{addressLabel}</p>
-        <p className="text-xs text-slate-500">
-          更多操作（交易 / 挖矿）后续会开放更快捷入口。
-        </p>
+        <div className="flex flex-wrap gap-2">
+          <Button size="sm" variant="outline" onClick={() => setFocusedAction('transaction')}>
+            用于发交易
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => {
+              setPreferredMinerAddress(wallet.address);
+              setFocusedAction('mining');
+            }}
+          >
+            设为挖矿奖励地址
+          </Button>
+        </div>
       </div>
     );
   };
 
-  const showHeaderCTA = wallets.length > 0
+  const showHeaderCTA = wallets.length > 0;
 
   return (
-    <Card className="h-full flex flex-col">
+    <Card className="flex h-full flex-col rounded-[28px] border-slate-200/80 bg-white/90 shadow-sm ring-1 ring-slate-200/70">
       <CardHeader>
-        <CardTitle>钱包管理</CardTitle>
+        <CardTitle className="text-xl">钱包管理</CardTitle>
         <CardDescription>管理你的资产，当前账户会在这里展示可用余额与入口。</CardDescription>
       </CardHeader>
 
-      <CardContent className="flex-1 min-h-0 flex flex-col gap-4 overflow-hidden">
+      <CardContent className="flex min-h-0 flex-1 flex-col gap-4 overflow-hidden">
         <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-sm text-slate-500">钱包数量</p>
@@ -69,11 +81,11 @@ const Wallet: React.FC = () => {
           renderEmptyState()
         ) : (
           <>
-        <div className="rounded-2xl border border-slate-200 bg-gradient-to-r from-indigo-500/5 to-white p-4 shadow-sm">
-          <p className="text-xs uppercase tracking-wide text-slate-500">总资产（合计）</p>
-          <p className="text-3xl font-semibold text-slate-900">{totalBalance} 币</p>
-          <p className="text-xs text-slate-500">{wallets.length} 个钱包正在运行</p>
-        </div>
+            <div className="rounded-2xl border border-slate-200 bg-gradient-to-r from-cyan-500/10 to-white p-4 shadow-sm">
+              <p className="text-xs uppercase tracking-wide text-slate-500">总资产（合计）</p>
+              <p className="text-3xl font-semibold text-slate-900">{totalBalance} 币</p>
+              <p className="text-xs text-slate-500">{wallets.length} 个钱包正在运行</p>
+            </div>
             <ScrollArea className="flex-1 rounded-2xl">
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {wallets.map(renderWalletCard)}

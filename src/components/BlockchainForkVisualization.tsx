@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import * as d3 from 'd3';
 
 const BlockchainForkVisualization: React.FC = () => {
-  const { chains, addChain, resolveChainFork } = useBlockchainStore();
+  const { chains, addChain, resolveChainFork, setSelectedBlockHash } = useBlockchainStore();
   const svgRef = useRef<SVGSVGElement | null>(null);
 
   const handleCreateFork = () => {
@@ -37,14 +37,14 @@ const BlockchainForkVisualization: React.FC = () => {
     chains.forEach((chain, chainIndex) => {
       const chainG = g.append("g").attr("transform", `translate(0, ${chainIndex * 100})`);
 
-      chain.blocks.forEach((block, blockIndex) => {
+        chain.blocks.forEach((block, blockIndex) => {
         chainG.append("rect")
           .attr("x", blockIndex * blockSpacing)
           .attr("y", 0)
           .attr("width", blockSize)
           .attr("height", blockSize)
-          .attr("fill", chain.isMain ? "#4CAF50" : "#FFC107")
-          .attr("stroke", "#000")
+          .attr("fill", chain.isMain ? "#0f766e" : "#f59e0b")
+          .attr("stroke", "#0f172a")
           .attr("stroke-width", 2);
 
         chainG.append("text")
@@ -60,9 +60,23 @@ const BlockchainForkVisualization: React.FC = () => {
             .attr("y1", blockSize / 2)
             .attr("x2", blockIndex * blockSpacing)
             .attr("y2", blockSize / 2)
-            .attr("stroke", "#000")
+            .attr("stroke", "#0f172a")
             .attr("stroke-width", 2);
         }
+      });
+
+      chain.blocks.forEach((block, blockIndex) => {
+        chainG.append('foreignObject')
+          .attr('x', blockIndex * blockSpacing)
+          .attr('y', 52)
+          .attr('width', blockSize + 20)
+          .attr('height', 40)
+          .html(
+            `<button type="button" style="font-size:12px;padding:4px 8px;border:1px solid #cbd5e1;border-radius:9999px;background:#fff;cursor:pointer;">区块 ${block.index}</button>`
+          )
+          .on('click', () => {
+            setSelectedBlockHash(block.hash);
+          });
       });
 
       chainG.append("text")
@@ -70,15 +84,15 @@ const BlockchainForkVisualization: React.FC = () => {
         .attr("y", blockSize / 2)
         .attr("text-anchor", "end")
         .attr("dominant-baseline", "central")
-        .text(chain.isMain ? "主链" : `分叉 ${chainIndex}`);
+        .text(chain.isMain ? "主链" : `分叉链 ${chainIndex}`);
     });
 
-  }, [chains]);
+  }, [chains, setSelectedBlockHash]);
 
   return (
-    <Card>
+    <Card className="rounded-[28px] border-slate-200/80 bg-white/90 shadow-sm ring-1 ring-slate-200/70">
       <CardHeader>
-        <CardTitle>区块链分叉可视化</CardTitle>
+        <CardTitle className="text-xl">区块链分叉可视化</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">

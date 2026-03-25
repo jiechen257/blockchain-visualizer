@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useBlockchainStore from "@/store/useBlockchainStore";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import WalletSelect from "./WalletSelect";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { createNewBlock, mineBlock } from "@/utils/blockchain";
@@ -13,30 +13,45 @@ const BlockMining: React.FC = () => {
 		pendingTransactions,
 		removePendingTransaction,
 		wallets,
+    preferredMinerAddress,
+    setPreferredMinerAddress,
+    focusedAction,
+    setFocusedAction,
 	} = useBlockchainStore();
-	const [miningRewardAddress, setMiningRewardAddress] = useState("");
+	const [miningRewardAddress, setMiningRewardAddress] = useState(preferredMinerAddress ?? "");
 	const [error, setError] = useState<string | null>(null);
+  const [status, setStatus] = useState<'idle' | 'mining' | 'success' | 'error'>('idle');
+  const [resultSummary, setResultSummary] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (preferredMinerAddress) {
+      setMiningRewardAddress(preferredMinerAddress);
+    }
+  }, [preferredMinerAddress]);
 
 	const handleMineBlock = () => {
-		setError(null); // 重置错误状态
+		setError(null);
+    setResultSummary(null);
+    setStatus('mining');
 
 		if (!miningRewardAddress) {
 			setError("请选择一个钱包来接收挖矿奖励");
+      setStatus('error');
 			return;
 		}
 
 		const mainChain = chains.find((chain) => chain.isMain);
 		if (!mainChain) {
 			setError("找不到主链");
+      setStatus('error');
 			return;
 		}
 
 		try {
-			const transactionsToMine = pendingTransactions.slice(0, 5); // 假设每个区块最多包含5个交易
+			const transactionsToMine = pendingTransactions.slice(0, 5);
 			const previousBlock = mainChain.blocks[mainChain.blocks.length - 1];
 
 			if (!previousBlock) {
-				// 如果还没有区块，创建创世区块
 				const genesisBlock = createNewBlock({
 					index: -1,
 					hash: "0",
@@ -55,40 +70,88 @@ const BlockMining: React.FC = () => {
 				transactionsToMine.forEach((tx) => removePendingTransaction(tx.id));
 			}
 
-			// 更新矿工的余额（这部分逻辑可能需要移到 store 中）
 			const minerWallet = wallets.find(
 				(w) => w.address === miningRewardAddress
 			);
 			if (minerWallet) {
-				minerWallet.balance += 10; // 假设挖矿奖励为10个币
+        // 通过 store 更新奖励地址余额，确保总览卡和钱包面板同步刷新。
+        useBlockchainStore.setState((state) => ({
+          wallets: state.wallets.map((wallet) =>
+            wallet.address === miningRewardAddress
+              ? { ...wallet, balance: wallet.balance + 10 }
+              : wallet
+          ),
+        }));
 			}
 
-			console.log("成功挖掘新区块");
+      setPreferredMinerAddress(miningRewardAddress);
+      setStatus('success');
+      setResultSummary(
+        transactionsToMine.length === 0
+          ? '本次挖出的是空块，但主链高度仍然会增加'
+          : `本次已打包 ${transactionsToMine.length} 笔交易，并发放 10 币挖矿奖励`
+      );
+      if (focusedAction === 'mining') {
+        setFocusedAction(null);
+      }
 		} catch (err) {
 			console.error("挖矿过程中出错:", err);
 			setError("挖矿过程中出错，请查看控制台以获取更多信息");
+      setStatus('error');
 		}
 	};
 
 	return (
-		<Card className="h-full flex flex-col">
+		<Card
+      className={`flex h-full flex-col rounded-[28px] border-slate-200/80 bg-white/90 shadow-sm ring-1 ring-slate-200/70 ${
+        focusedAction === 'mining' ? 'ring-2 ring-cyan-300' : ''
+      }`}
+    >
 			<CardHeader>
-				<CardTitle>区块挖掘</CardTitle>
+				<CardTitle className="text-xl">区块挖掘</CardTitle>
+        <CardDescription>选择奖励地址后手动挖矿。无待确认交易时也会产生空块，便于观察主链高度增长。</CardDescription>
 			</CardHeader>
-			<CardContent className="flex-grow flex flex-col space-y-4 overflow-hidden">
-				{" "}
-				{/* 添加 overflow-hidden */}
+			<CardContent className="flex flex-grow flex-col space-y-4 overflow-hidden">
+        <div className="grid gap-3 rounded-2xl border border-slate-200 bg-slate-50/80 p-4 sm:grid-cols-3">
+          <div>
+            <p className="text-xs uppercase tracking-wide text-slate-500">待打包交易</p>
+            <p className="mt-1 text-2xl font-semibold text-slate-900">{pendingTransactions.length}</p>
+          </div>
+          <div>
+            <p className="text-xs uppercase tracking-wide text-slate-500">奖励地址</p>
+            <p className="mt-1 text-sm font-medium text-slate-700">
+              {miningRewardAddress ? `${miningRewardAddress.slice(0, 8)}...` : '尚未选择'}
+            </p>
+          </div>
+          <div>
+            <p className="text-xs uppercase tracking-wide text-slate-500">挖矿状态</p>
+            <p className="mt-1 text-sm font-medium text-slate-700">
+              {status === 'idle' && '等待开始'}
+              {status === 'mining' && '处理中'}
+              {status === 'success' && '已完成'}
+              {status === 'error' && '发生错误'}
+            </p>
+          </div>
+        </div>
 				<WalletSelect
 					value={miningRewardAddress}
-					onValueChange={setMiningRewardAddress}
+					onValueChange={(value) => {
+            setMiningRewardAddress(value);
+            setPreferredMinerAddress(value);
+          }}
 					placeholder="选择钱包"
 					label="挖矿奖励地址"
 				/>
 				<Button onClick={handleMineBlock}>挖掘新区块</Button>
 				{error && <p className="text-red-500">{error}</p>}
+        {resultSummary && (
+          <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+            {resultSummary}
+          </div>
+        )}
 				<ScrollArea className="flex-grow">
 					<div className="pr-4">
-						<h4 className="font-bold mb-2">区块链:</h4>
+						<h4 className="mb-2 font-bold">区块链:</h4>
 						<ul className="space-y-2">
 							{chains.map((chain) =>
 								chain.blocks.map((block) => (

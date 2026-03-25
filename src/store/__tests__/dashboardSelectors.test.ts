@@ -6,6 +6,7 @@ const createState = (partial: Partial<DashboardStatsState>): DashboardStatsState
   pendingTransactions: [],
   chains: [],
   isSimulating: false,
+  activityFeed: [],
   ...partial,
 });
 

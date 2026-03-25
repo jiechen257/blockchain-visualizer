@@ -11,6 +11,8 @@ import BlockDetails from './components/BlockDetails';
 import NetworkSimulation from './components/NetworkSimulation';
 import BlockchainForkVisualization from './components/BlockchainForkVisualization';
 import Tutorial from './components/Tutorial';
+import QuickStartChecklist from './components/dashboard/QuickStartChecklist';
+import RecentActivityFeed from './components/dashboard/RecentActivityFeed';
 
 const App: React.FC = () => {
   const [showTutorial, setShowTutorial] = useState(false);
@@ -52,15 +54,8 @@ const App: React.FC = () => {
               <div className="h-[360px] md:h-[420px] w-full">
                 <BlockMining />
               </div>
-              {/* 预留后续任务：Checklist 与 Activity 的独立组件插槽。 */}
-              <div className="rounded-lg border border-slate-200 bg-white p-5">
-                <h4 className="text-lg font-semibold text-slate-900">流程检查清单（占位）</h4>
-                <p className="mt-2 text-sm text-slate-600">后续任务会在此处接入可追踪的步骤校验面板。</p>
-              </div>
-              <div className="rounded-lg border border-slate-200 bg-white p-5">
-                <h4 className="text-lg font-semibold text-slate-900">实时活动流（占位）</h4>
-                <p className="mt-2 text-sm text-slate-600">后续任务会接入结构化事件流与筛选能力。</p>
-              </div>
+              <QuickStartChecklist />
+              <RecentActivityFeed />
             </div>
           </div>
         </section>

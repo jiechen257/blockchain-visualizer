@@ -2,7 +2,7 @@ import type { FullState } from './useBlockchainStore';
 
 export type DashboardStatsState = Pick<
   FullState,
-  'wallets' | 'pendingTransactions' | 'chains' | 'isSimulating'
+  'wallets' | 'pendingTransactions' | 'chains' | 'isSimulating' | 'activityFeed'
 >;
 
 export const selectDashboardStats = (state: DashboardStatsState) => {
@@ -17,3 +17,17 @@ export const selectDashboardStats = (state: DashboardStatsState) => {
     networkStatus: { label: '网络状态', value: state.isSimulating ? '运行中' : '已停止' },
   };
 };
+
+export const selectChecklist = (state: Pick<FullState, 'wallets' | 'activityFeed'>) => [
+  { key: 'wallet', label: '创建一个钱包', done: state.wallets.length > 0 },
+  {
+    key: 'transaction',
+    label: '发起一笔交易',
+    done: state.activityFeed.some((item) => item.type === 'transaction.created'),
+  },
+  {
+    key: 'mined',
+    label: '挖出一个新区块',
+    done: state.activityFeed.some((item) => item.type === 'block.mined'),
+  },
+];

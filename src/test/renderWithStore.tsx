@@ -7,4 +7,14 @@ export const resetBlockchainStore = () => {
   useBlockchainStore.setState(initialState, true)
 }
 
-export const renderWithStore = (ui: ReactElement): RenderResult => render(ui)
+export const resetStore = resetBlockchainStore
+
+export const renderWithStore = (
+  ui: ReactElement,
+  options?: { reset?: boolean }
+): RenderResult => {
+  if (options?.reset !== false) {
+    resetBlockchainStore()
+  }
+  return render(ui)
+}

@@ -9,10 +9,14 @@ export interface ExperienceSlice {
   selectedBlockHash: string | null;
   isSimulating: boolean;
   simulationSpeed: number;
+  focusedAction: 'transaction' | 'mining' | null;
+  preferredMinerAddress: string | null;
   pushActivity: (event: Omit<ActivityEvent, 'id'>) => void;
   setSelectedBlockHash: (hash: string | null) => void;
   setSimulationState: (next: boolean) => void;
   setSimulationSpeed: (next: number) => void;
+  setFocusedAction: (next: 'transaction' | 'mining' | null) => void;
+  setPreferredMinerAddress: (address: string | null) => void;
 }
 
 export const createExperienceSlice: StateCreator<
@@ -24,10 +28,12 @@ export const createExperienceSlice: StateCreator<
   activityFeed: [],
   selectedBlockHash: null,
   isSimulating: false,
-  simulationSpeed: 1,
+  simulationSpeed: 1000,
+  focusedAction: null,
+  preferredMinerAddress: null,
   pushActivity: (event) => set((state) => ({
     // 仅保留最近 20 条事件，避免 feed 无界增长。
-    activityFeed: [...state.activityFeed, { ...event, id: uuidv4() }].slice(-MAX_ACTIVITY_FEED_SIZE),
+    activityFeed: [{ ...event, id: uuidv4() }, ...state.activityFeed].slice(0, MAX_ACTIVITY_FEED_SIZE),
   })),
   setSelectedBlockHash: (hash) => set({ selectedBlockHash: hash }),
   setSimulationState: (next) => {
@@ -44,4 +50,6 @@ export const createExperienceSlice: StateCreator<
     set({ isSimulating: next });
   },
   setSimulationSpeed: (next) => set({ simulationSpeed: next }),
+  setFocusedAction: (next) => set({ focusedAction: next }),
+  setPreferredMinerAddress: (address) => set({ preferredMinerAddress: address }),
 });

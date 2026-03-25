@@ -4,28 +4,20 @@ import { Button } from "@/components/ui/button";
 
 const tutorialSteps = [
   {
-    title: "欢迎",
-    content: "欢迎来到区块链可视化系统！这个教程将帮助你了解系统的各个部分。",
+    title: "创建钱包",
+    content: "先创建至少一个钱包，后续交易和挖矿都会围绕这个地址展开。",
   },
   {
-    title: "钱包",
-    content: "钱包用于存储和管理你的加密货币。你可以创建新钱包，查看余额和交易历史。",
+    title: "发起交易",
+    content: "选择发送方和接收方钱包，提交后交易会进入待确认池，等待被区块打包。",
   },
   {
-    title: "交易",
-    content: "交易允许你将加密货币从一个钱包发送到另一个钱包。所有交易都会被记录在区块链上。",
+    title: "挖矿确认",
+    content: "挖出新区块后，待确认交易会被写入链上，同时奖励地址会收到挖矿奖励。",
   },
   {
-    title: "挖矿",
-    content: "挖矿是将新交易添加到区块链的过程。矿工通过解决复杂的数学问题来竞争添加新区块的权利。",
-  },
-  {
-    title: "区块链",
-    content: "区块链是一个分布式账本，记录了所有的交易。每个区块都包含多个交易，并链接到前一个区块。",
-  },
-  {
-    title: "分叉",
-    content: "分叉发生在区块链出现两个或多个竞争版本时。最长的链通常被认为是有效的。",
+    title: "观察主链变化",
+    content: "在主链舞台和结构化详情里查看最新区块、分叉状态与关键字段变化。",
   },
 ];
 
@@ -52,7 +44,7 @@ const Tutorial: React.FC<TutorialProps> = ({ onComplete }) => {
 
   return (
     <Dialog open={true}>
-      <DialogContent>
+      <DialogContent className="rounded-[28px] border-slate-200 bg-white/95 shadow-2xl">
         <DialogHeader>
           <DialogTitle>{tutorialSteps[currentStep].title}</DialogTitle>
           <DialogDescription>
@@ -61,6 +53,7 @@ const Tutorial: React.FC<TutorialProps> = ({ onComplete }) => {
         </DialogHeader>
         <DialogFooter>
           <Button onClick={prevStep} disabled={currentStep === 0}>上一步</Button>
+          <Button variant="ghost" onClick={onComplete}>稍后再看</Button>
           <Button onClick={nextStep}>
             {currentStep === tutorialSteps.length - 1 ? '完成' : '下一步'}
           </Button>

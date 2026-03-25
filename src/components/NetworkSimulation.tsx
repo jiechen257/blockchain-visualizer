@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import useBlockchainStore from '@/store/useBlockchainStore';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -6,9 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 
 const NetworkSimulation: React.FC = () => {
-  const { wallets, addPendingTransaction } = useBlockchainStore();
-  const [isSimulating, setIsSimulating] = useState(false);
-  const [simulationSpeed, setSimulationSpeed] = useState(1000);
+  const { wallets, addPendingTransaction, isSimulating, simulationSpeed, setSimulationState, setSimulationSpeed } = useBlockchainStore();
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -45,7 +43,7 @@ const NetworkSimulation: React.FC = () => {
             <Switch
               id="simulation-switch"
               checked={isSimulating}
-              onCheckedChange={setIsSimulating}
+              onCheckedChange={setSimulationState}
             />
             <Label htmlFor="simulation-switch">
               {isSimulating ? '停止模拟' : '开始模拟'}
