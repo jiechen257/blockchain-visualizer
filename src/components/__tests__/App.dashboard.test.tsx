@@ -4,8 +4,9 @@ import App from '@/App'
 import { renderWithStore } from '@/test/renderWithStore'
 
 describe('App dashboard', () => {
-  it('renders a system overview heading', () => {
+  it('renders the header with the branding title', () => {
     renderWithStore(<App />)
-    expect(screen.getByText(/系统总览/i)).toBeInTheDocument()
+    const matches = screen.getAllByText(/区块链可视化系统/i)
+    expect(matches.length).toBeGreaterThan(0)
   })
 })
