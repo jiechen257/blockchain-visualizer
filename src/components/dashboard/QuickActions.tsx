@@ -6,15 +6,22 @@ export default function QuickActions() {
 
   return (
     <section className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-      <div className="flex flex-col gap-3 sm:flex-row">
-        <Button onClick={createWallet}>创建钱包</Button>
-        {/* 本轮不越界扩展 store，先保留无副作用快捷入口占位。 */}
-        <Button variant="outline" disabled title="待后续任务接入焦点状态">
-          发起交易
-        </Button>
-        <Button variant="outline" disabled title="待后续任务接入焦点状态">
-          开始挖矿
-        </Button>
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center justify-between gap-3">
+          <p className="text-sm font-semibold text-slate-700">快捷入口</p>
+          <Button onClick={createWallet}>创建钱包</Button>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Button variant="outline" disabled title="待后续任务接入焦点状态">
+            发起交易
+          </Button>
+          <Button variant="outline" disabled title="待后续任务接入焦点状态">
+            开始挖矿
+          </Button>
+        </div>
+        <p className="text-xs text-slate-500">
+          交易/挖矿入口暂作为占位，后续会在钱包焦点状态就绪后联动该区域。
+        </p>
       </div>
     </section>
   );

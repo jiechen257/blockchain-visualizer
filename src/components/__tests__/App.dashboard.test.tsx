@@ -13,4 +13,9 @@ describe('App dashboard', () => {
     expect(screen.queryByText(/网络状态/i)).not.toBeInTheDocument()
     expect(screen.getByText(/主链舞台/i)).toBeInTheDocument()
   })
+
+  it('shows a create-wallet empty state when no wallets exist', () => {
+    renderWithStore(<App />)
+    expect(screen.getByText(/创建第一个钱包/i)).toBeInTheDocument()
+  })
 })

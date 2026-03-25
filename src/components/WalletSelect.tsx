@@ -22,16 +22,16 @@ const WalletSelect: React.FC<WalletSelectProps> = ({ value, onValueChange, place
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
-          {wallets.length > 0 ? (
-            wallets.map((wallet) => (
-              <SelectItem key={wallet.address} value={wallet.address}>
-                {wallet.address} ({wallet.balance} 币)
-              </SelectItem>
-            ))
-          ) : (
-            <SelectItem value="no-wallet" disabled>
-              没有可用的钱包
+        {wallets.length > 0 ? (
+          wallets.map((wallet) => (
+            <SelectItem key={wallet.address} value={wallet.address}>
+              {wallet.address.slice(0, 8)}... ({wallet.balance} 币)
             </SelectItem>
+          ))
+        ) : (
+          <SelectItem value="no-wallet" disabled>
+            没有可用的钱包
+          </SelectItem>
           )}
         </SelectContent>
       </Select>
