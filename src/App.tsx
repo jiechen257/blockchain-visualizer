@@ -8,6 +8,7 @@ import Transaction from './components/Transaction';
 import BlockMining from './components/BlockMining';
 import BlockchainVisualization from './components/BlockchainVisualization';
 import BlockDetails from './components/BlockDetails';
+import NetworkSimulation from './components/NetworkSimulation';
 import BlockchainForkVisualization from './components/BlockchainForkVisualization';
 import Tutorial from './components/Tutorial';
 
@@ -62,6 +63,14 @@ const App: React.FC = () => {
               </div>
             </div>
           </div>
+        </section>
+
+        <section className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-2xl font-semibold text-slate-900">网络模拟入口</h3>
+            <p className="text-sm text-slate-600">保留自动交易模拟入口，避免相对基线能力回退</p>
+          </div>
+          <NetworkSimulation />
         </section>
 
         <section className="space-y-4">
