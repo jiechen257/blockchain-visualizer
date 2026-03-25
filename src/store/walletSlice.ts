@@ -1,7 +1,7 @@
 import { StateCreator } from 'zustand';
 import EC from 'elliptic';
 import SHA256 from 'crypto-js/sha256';
-import { BlockchainState, Wallet, Transaction } from './types';
+import { ActivityEvent, BlockchainState, Wallet, Transaction } from './types';
 
 const ec = new EC.ec('secp256k1');
 
@@ -11,8 +11,12 @@ export interface WalletSlice {
   signTransaction: (fromAddress: string, toAddress: string, amount: number) => Transaction | null;
 }
 
+type ActivityActions = {
+  pushActivity: (event: Omit<ActivityEvent, 'id'>) => void;
+};
+
 export const createWalletSlice: StateCreator<
-  BlockchainState,
+  BlockchainState & ActivityActions,
   [],
   [],
   WalletSlice
@@ -23,6 +27,13 @@ export const createWalletSlice: StateCreator<
     const privateKey = key.getPrivate('hex');
     const publicKey = key.getPublic('hex');
     const address = publicKey.slice(0, 40);
+    state.pushActivity({
+      type: 'wallet.created',
+      title: '已创建新钱包',
+      description: `${address.slice(0, 8)}... 已可用于发起交易`,
+      timestamp: Date.now(),
+    });
+
     return {
       wallets: [...state.wallets, { address, balance: 100, privateKey, publicKey }]
     };
