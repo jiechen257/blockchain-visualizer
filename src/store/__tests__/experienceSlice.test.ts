@@ -2,6 +2,14 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import useBlockchainStore from '@/store/useBlockchainStore';
 import { resetBlockchainStore } from '@/test/renderWithStore';
 
+type PersistedStoreSnapshot = {
+  wallets: unknown[];
+  activityFeed?: unknown;
+  selectedBlockHash?: unknown;
+  isSimulating?: unknown;
+  simulationSpeed?: unknown;
+};
+
 describe('experienceSlice', () => {
   beforeEach(() => {
     resetBlockchainStore();
@@ -38,7 +46,7 @@ describe('experienceSlice', () => {
 
     const raw = globalThis.localStorage.getItem('blockchain-storage');
     expect(raw).not.toBeNull();
-    const persistedWrapper = JSON.parse(raw as string) as { state: Record<string, unknown> };
+    const persistedWrapper = JSON.parse(raw as string) as { state: PersistedStoreSnapshot };
     const persisted = persistedWrapper.state;
 
     expect(persisted.wallets.length).toBe(1);
