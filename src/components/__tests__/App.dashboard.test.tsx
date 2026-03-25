@@ -9,6 +9,8 @@ describe('App dashboard', () => {
     expect(screen.getByText(/系统总览/i)).toBeInTheDocument()
     expect(screen.getByText(/快速开始/i)).toBeInTheDocument()
     expect(screen.getAllByText(/网络模拟/i).length).toBeGreaterThan(0)
+    expect(screen.getByText(/开始模拟/i)).toBeInTheDocument()
+    expect(screen.queryByText(/网络状态/i)).not.toBeInTheDocument()
     expect(screen.getByText(/主链舞台/i)).toBeInTheDocument()
   })
 })
