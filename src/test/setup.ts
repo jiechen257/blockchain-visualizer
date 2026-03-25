@@ -1,4 +1,5 @@
-import '@testing-library/jest-dom'
+import { beforeEach } from 'vitest'
+import '@testing-library/jest-dom/vitest'
 
 const localStorageMock = (() => {
   let store: Record<string, string> = {}
@@ -36,4 +37,8 @@ Object.defineProperty(window, 'matchMedia', {
     dispatchEvent: () => false,
   }),
   writable: true,
+})
+
+beforeEach(() => {
+  window.localStorage.clear()
 })

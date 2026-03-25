@@ -1,7 +1,11 @@
-import { render, screen } from '@testing-library/react'
+import { describe, expect, it } from 'vitest'
+import { screen } from '@testing-library/react'
 import App from '@/App'
+import { renderWithStore } from '@/test/renderWithStore'
 
-it('renders a system overview heading', () => {
-  render(<App />)
-  expect(screen.getByText(/系统总览/i)).toBeInTheDocument()
+describe('App dashboard', () => {
+  it('renders a system overview heading', () => {
+    renderWithStore(<App />)
+    expect(screen.getByText(/系统总览/i)).toBeInTheDocument()
+  })
 })
