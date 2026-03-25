@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
+const abbreviateAddress = (address: string) => `${address.slice(0, 8)}…${address.slice(-8)}`;
+
 const Wallet: React.FC = () => {
   const { wallets, createWallet } = useBlockchainStore();
   const totalBalance = wallets.reduce((acc, wallet) => acc + wallet.balance, 0);
@@ -21,7 +23,7 @@ const Wallet: React.FC = () => {
   );
 
   const renderWalletCard = (wallet: { address: string; balance: number }, index: number) => {
-    const addressLabel = `${wallet.address.slice(0, 8)}…${wallet.address.slice(-8)}`;
+    const addressLabel = abbreviateAddress(wallet.address);
 
     return (
       <div

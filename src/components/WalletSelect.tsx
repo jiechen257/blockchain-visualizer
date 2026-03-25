@@ -11,6 +11,8 @@ interface WalletSelectProps {
   label: string;
 }
 
+const abbreviateAddress = (address: string) => `${address.slice(0, 8)}…${address.slice(-8)}`;
+
 const WalletSelect: React.FC<WalletSelectProps> = ({ value, onValueChange, placeholder, label }) => {
   const { wallets } = useBlockchainStore();
 
@@ -25,14 +27,14 @@ const WalletSelect: React.FC<WalletSelectProps> = ({ value, onValueChange, place
         {wallets.length > 0 ? (
           wallets.map((wallet) => (
             <SelectItem key={wallet.address} value={wallet.address}>
-              {wallet.address.slice(0, 8)}... ({wallet.balance} 币)
+              {abbreviateAddress(wallet.address)} ({wallet.balance} 币)
             </SelectItem>
           ))
         ) : (
           <SelectItem value="no-wallet" disabled>
-            没有可用的钱包
+            请先创建第一个钱包
           </SelectItem>
-          )}
+        )}
         </SelectContent>
       </Select>
     </div>
