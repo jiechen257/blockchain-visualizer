@@ -17,20 +17,20 @@ export const createTransactionSlice: StateCreator<
   [],
   [],
   TransactionSlice
-> = (set) => ({
+> = (set, get) => ({
   pendingTransactions: [],
-  addPendingTransaction: (transaction) => set((state) => {
-    state.pushActivity({
+  addPendingTransaction: (transaction) => {
+    set((state) => ({
+      pendingTransactions: [...state.pendingTransactions, { ...transaction, id: uuidv4() }]
+    }));
+
+    get().pushActivity({
       type: 'transaction.created',
       title: '已创建待确认交易',
       description: `${transaction.from.slice(0, 8)}... -> ${transaction.to.slice(0, 8)}...`,
       timestamp: Date.now(),
     });
-
-    return {
-      pendingTransactions: [...state.pendingTransactions, { ...transaction, id: uuidv4() }]
-    };
-  }),
+  },
   removePendingTransaction: (id) => set((state) => ({
     pendingTransactions: state.pendingTransactions.filter(t => t.id !== id)
   })),

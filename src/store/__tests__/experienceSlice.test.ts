@@ -8,7 +8,7 @@ describe('experienceSlice', () => {
   });
 
   it('keeps only the latest 20 activity events', () => {
-    const store = useBlockchainStore.getState() as any;
+    const store = useBlockchainStore.getState();
 
     for (let index = 0; index < 21; index += 1) {
       store.pushActivity({
@@ -18,14 +18,14 @@ describe('experienceSlice', () => {
       });
     }
 
-    const activityFeed = (useBlockchainStore.getState() as any).activityFeed;
+    const activityFeed = useBlockchainStore.getState().activityFeed;
     expect(activityFeed).toHaveLength(20);
     expect(activityFeed[0].title).toBe('wallet 1');
     expect(activityFeed[19].title).toBe('wallet 20');
   });
 
   it('does not persist experience state fields into localStorage', () => {
-    const store = useBlockchainStore.getState() as any;
+    const store = useBlockchainStore.getState();
     store.setSimulationState(true);
     store.setSimulationSpeed(5);
     store.setSelectedBlockHash('block-hash-1');
@@ -38,7 +38,8 @@ describe('experienceSlice', () => {
 
     const raw = globalThis.localStorage.getItem('blockchain-storage');
     expect(raw).not.toBeNull();
-    const persisted = JSON.parse(raw as string).state;
+    const persistedWrapper = JSON.parse(raw as string) as { state: Record<string, unknown> };
+    const persisted = persistedWrapper.state;
 
     expect(persisted.wallets.length).toBe(1);
     expect(persisted.activityFeed).toBeUndefined();

@@ -22,22 +22,23 @@ export const createWalletSlice: StateCreator<
   WalletSlice
 > = (set, get) => ({
   wallets: [],
-  createWallet: () => set((state) => {
+  createWallet: () => {
     const key = ec.genKeyPair();
     const privateKey = key.getPrivate('hex');
     const publicKey = key.getPublic('hex');
     const address = publicKey.slice(0, 40);
-    state.pushActivity({
+
+    set((state) => ({
+      wallets: [...state.wallets, { address, balance: 100, privateKey, publicKey }]
+    }));
+
+    get().pushActivity({
       type: 'wallet.created',
       title: '已创建新钱包',
       description: `${address.slice(0, 8)}... 已可用于发起交易`,
       timestamp: Date.now(),
     });
-
-    return {
-      wallets: [...state.wallets, { address, balance: 100, privateKey, publicKey }]
-    };
-  }),
+  },
   signTransaction: (fromAddress, toAddress, amount) => {
     const wallet = get().wallets.find(w => w.address === fromAddress);
     if (!wallet) return null;

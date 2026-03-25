@@ -1,6 +1,11 @@
 import type { FullState } from './useBlockchainStore';
 
-export const selectDashboardStats = (state: FullState) => {
+export type DashboardStatsState = Pick<
+  FullState,
+  'wallets' | 'pendingTransactions' | 'chains' | 'isSimulating'
+>;
+
+export const selectDashboardStats = (state: DashboardStatsState) => {
   // 首页总览统一基于主链派生，避免各处重复查找逻辑。
   const mainChain = state.chains.find((chain) => chain.isMain);
 
