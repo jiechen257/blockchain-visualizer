@@ -23,4 +23,27 @@ describe('experienceSlice', () => {
     expect(activityFeed[0].title).toBe('wallet 1');
     expect(activityFeed[19].title).toBe('wallet 20');
   });
+
+  it('does not persist experience state fields into localStorage', () => {
+    const store = useBlockchainStore.getState() as any;
+    store.setSimulationState(true);
+    store.setSimulationSpeed(5);
+    store.setSelectedBlockHash('block-hash-1');
+    store.pushActivity({
+      type: 'wallet.created',
+      title: 'created',
+      timestamp: Date.now(),
+    });
+    store.createWallet();
+
+    const raw = globalThis.localStorage.getItem('blockchain-storage');
+    expect(raw).not.toBeNull();
+    const persisted = JSON.parse(raw as string).state;
+
+    expect(persisted.wallets.length).toBe(1);
+    expect(persisted.activityFeed).toBeUndefined();
+    expect(persisted.selectedBlockHash).toBeUndefined();
+    expect(persisted.isSimulating).toBeUndefined();
+    expect(persisted.simulationSpeed).toBeUndefined();
+  });
 });

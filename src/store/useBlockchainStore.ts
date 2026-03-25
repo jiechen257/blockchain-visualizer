@@ -20,6 +20,12 @@ const useBlockchainStore = create<FullState>()(
     }),
     {
       name: 'blockchain-storage',
+      partialize: (state) => ({
+        chains: state.chains,
+        pendingTransactions: state.pendingTransactions,
+        wallets: state.wallets,
+        miners: state.miners,
+      }),
     }
   )
 );
