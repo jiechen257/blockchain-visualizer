@@ -1,4 +1,5 @@
-import { beforeEach } from 'vitest'
+import { afterEach, beforeEach } from 'vitest'
+import { cleanup } from '@testing-library/react'
 import '@testing-library/jest-dom/vitest'
 
 const matchMediaMock = (query: string) => ({
@@ -12,33 +13,34 @@ const matchMediaMock = (query: string) => ({
   dispatchEvent: () => false,
 })
 
-const localStorageMock = (() => {
-  let store: Record<string, string> = {}
+const storageMock = (() => {
+  const store = new Map<string, string>()
 
   return {
     getItem(key: string) {
-      return store[key] ?? null
+      return store.has(key) ? store.get(key) ?? null : null
     },
     setItem(key: string, value: string) {
-      store[key] = value
+      store.set(key, value)
     },
     removeItem(key: string) {
-      delete store[key]
+      store.delete(key)
     },
     clear() {
-      store = {}
+      store.clear()
     },
   }
 })()
 
 Object.defineProperty(globalThis, 'localStorage', {
-  value: localStorageMock,
+  value: storageMock,
   configurable: true,
 })
 Object.defineProperty(window, 'localStorage', {
-  value: localStorageMock,
+  value: storageMock,
   configurable: true,
 })
+
 Object.defineProperty(globalThis, 'matchMedia', {
   value: matchMediaMock,
   configurable: true,
@@ -49,8 +51,9 @@ Object.defineProperty(window, 'matchMedia', {
 })
 
 beforeEach(async () => {
-  localStorageMock.clear()
-  const { default: useBlockchainStore } = await import('@/store/useBlockchainStore')
-  const initialState = useBlockchainStore.getInitialState()
-  useBlockchainStore.setState(initialState, true)
+  storageMock.clear()
+  const { resetBlockchainStore } = await import('@/test/renderWithStore')
+  resetBlockchainStore()
 })
+
+afterEach(() => cleanup())
