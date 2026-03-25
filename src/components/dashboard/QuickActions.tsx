@@ -12,15 +12,15 @@ export default function QuickActions() {
           <Button onClick={createWallet}>创建钱包</Button>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Button variant="outline" disabled title="待后续任务接入焦点状态">
+          <Button variant="outline" disabled title="后续会开放更快捷的交易入口">
             发起交易
           </Button>
-          <Button variant="outline" disabled title="待后续任务接入焦点状态">
+          <Button variant="outline" disabled title="后续会开放更快捷的挖矿入口">
             开始挖矿
           </Button>
         </div>
         <p className="text-xs text-slate-500">
-          交易/挖矿入口暂作为占位，后续会在钱包焦点状态就绪后联动该区域。
+          交易/挖矿入口当前为占位，后续会开放更快捷的体验。
         </p>
       </div>
     </section>
