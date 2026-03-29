@@ -52,5 +52,8 @@ describe('Transaction', () => {
 
     expect(await screen.findByText(/交易已加入待确认池/i)).toBeInTheDocument()
     expect(screen.getByText(/现在可以去挖矿确认它/i)).toBeInTheDocument()
+    expect(useBlockchainStore.getState().guideStep).toBe('mempool')
+    expect(useBlockchainStore.getState().timelineStep).toBe('mempool')
+    expect(useBlockchainStore.getState().selectedEntity?.type).toBe('transaction')
   })
 })

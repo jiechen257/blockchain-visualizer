@@ -1,5 +1,5 @@
-import StructuredBlockDetails from '@/components/dashboard/StructuredBlockDetails';
+import LabEntityInspector from '@/components/lab/LabEntityInspector'
 
-const BlockDetails: React.FC = () => <StructuredBlockDetails />;
-
-export default BlockDetails;
+export default function BlockDetails() {
+  return <LabEntityInspector />
+}

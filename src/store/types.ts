@@ -45,6 +45,25 @@ export interface ActivityEvent {
   timestamp: number;
 }
 
+export type LabMode = 'guided' | 'sandbox' | 'advanced' | 'glossary';
+
+export type GuideStep =
+  | 'wallet'
+  | 'transaction'
+  | 'broadcast'
+  | 'mempool'
+  | 'mining'
+  | 'confirmed';
+
+export type TimelineStep = 'draft' | 'broadcast' | 'mempool' | 'mining' | 'confirmed';
+
+export type ExplanationLevel = 'basic' | 'deep';
+
+export interface LabSelectedEntity {
+  type: 'wallet' | 'transaction' | 'node' | 'mempool' | 'miner' | 'block' | 'chain';
+  id: string;
+}
+
 export interface BlockchainState {
   chains: Chain[];
   pendingTransactions: Transaction[];
