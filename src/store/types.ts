@@ -37,6 +37,14 @@ export interface Miner {
   strategy: 'honest' | 'selfish';
 }
 
+export interface ActivityEvent {
+  id: string;
+  type: 'wallet.created' | 'transaction.created' | 'block.mined' | 'fork.created' | 'fork.resolved' | 'simulation.started' | 'simulation.stopped';
+  title: string;
+  description?: string;
+  timestamp: number;
+}
+
 export interface BlockchainState {
   chains: Chain[];
   pendingTransactions: Transaction[];

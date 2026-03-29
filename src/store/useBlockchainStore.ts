@@ -5,8 +5,9 @@ import { createBlockchainSlice, BlockchainSlice } from './blockchainSlice';
 import { createWalletSlice, WalletSlice } from './walletSlice';
 import { createMinerSlice, MinerSlice } from './minerSlice';
 import { createTransactionSlice, TransactionSlice } from './transactionSlice';
+import { createExperienceSlice, ExperienceSlice } from './experienceSlice';
 
-type FullState = BlockchainState & BlockchainSlice & WalletSlice & MinerSlice & TransactionSlice;
+export type FullState = BlockchainState & BlockchainSlice & WalletSlice & MinerSlice & TransactionSlice & ExperienceSlice;
 
 const useBlockchainStore = create<FullState>()(
   persist(
@@ -15,9 +16,16 @@ const useBlockchainStore = create<FullState>()(
       ...createWalletSlice(set, get, api),
       ...createMinerSlice(set, get, api),
       ...createTransactionSlice(set, get, api),
+      ...createExperienceSlice(set, get, api),
     }),
     {
       name: 'blockchain-storage',
+      partialize: (state) => ({
+        chains: state.chains,
+        pendingTransactions: state.pendingTransactions,
+        wallets: state.wallets,
+        miners: state.miners,
+      }),
     }
   )
 );
