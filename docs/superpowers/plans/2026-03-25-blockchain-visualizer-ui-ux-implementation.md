@@ -1,12 +1,24 @@
 # Blockchain Visualizer UI/UX Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking. Historical checkboxes below are preserved as the authored plan record.
 
 **Goal:** 在不重写核心区块链逻辑的前提下，把当前项目升级为“现代产品化”的混合式控制台首页，补齐状态总览、操作反馈、轻量事件流、结构化区块详情与持续引导。
 
 **Architecture:** 保留现有 React + Zustand + D3 的主体结构，新增一个轻量体验状态 slice 承载事件流、选中区块与网络模拟状态，并用一个首页控制台容器串起 Hero、状态卡、操作工作台与可视化舞台。实现采用“先补测试与状态底座，再逐层替换 UI”的方式，避免在一个大提交里同时改业务逻辑、样式和可视化。
 
 **Tech Stack:** React 18, TypeScript, Vite, Zustand, shadcn/ui, Tailwind CSS, D3, Vitest, Testing Library
+
+## Execution Status
+
+- 状态：已实现并完成验证（2026-03-29）
+- 自动验证：
+  - `pnpm test`
+  - `pnpm lint`
+  - `pnpm build`
+- 运行验证：
+  - 本地启动 `pnpm dev --host 127.0.0.1 --port 4173`
+  - 使用 Playwright 驱动浏览器完成“创建钱包 -> 发起交易 -> 挖矿 -> 查看结构化区块详情 -> 启停网络模拟”主路径校验
+  - 桌面端与移动端页面截图已生成于 `/tmp/blockchain-plan-verify.png` 与 `/tmp/blockchain-plan-verify-mobile.png`
 
 ---
 
