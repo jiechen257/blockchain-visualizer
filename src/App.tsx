@@ -1,93 +1,58 @@
-import React, { useEffect, useState } from 'react';
-import Layout from './components/Layout';
-import DashboardHero from './components/dashboard/DashboardHero';
-import SystemStatCards from './components/dashboard/SystemStatCards';
-import QuickActions from './components/dashboard/QuickActions';
-import Wallet from './components/Wallet';
-import Transaction from './components/Transaction';
-import BlockMining from './components/BlockMining';
-import BlockchainVisualization from './components/BlockchainVisualization';
-import BlockDetails from './components/BlockDetails';
-import NetworkSimulation from './components/NetworkSimulation';
-import BlockchainForkVisualization from './components/BlockchainForkVisualization';
-import Tutorial from './components/Tutorial';
-import QuickStartChecklist from './components/dashboard/QuickStartChecklist';
-import RecentActivityFeed from './components/dashboard/RecentActivityFeed';
+import React from 'react'
+import Layout from '@/components/Layout'
+import BlockchainVisualization from '@/components/BlockchainVisualization'
+import BlockDetails from '@/components/BlockDetails'
+import useBlockchainStore from '@/store/useBlockchainStore'
+import LabTopNav from '@/components/lab/LabTopNav'
+import LabTaskPanel from '@/components/lab/LabTaskPanel'
+import LabTimeline from '@/components/lab/LabTimeline'
+import LabSandboxControls from '@/components/lab/LabSandboxControls'
+import LabAdvancedExperiments from '@/components/lab/LabAdvancedExperiments'
+import LabGlossary from '@/components/lab/LabGlossary'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 const App: React.FC = () => {
-  const [showTutorial, setShowTutorial] = useState(false);
+  const activeMode = useBlockchainStore((state) => state.activeMode)
 
-  useEffect(() => {
-    const tutorialCompleted = localStorage.getItem('tutorialCompleted');
-    if (!tutorialCompleted) {
-      setShowTutorial(true);
-    }
-  }, []);
+  const renderSandboxSidebar = () => (
+    <Card className="rounded-[28px] border-slate-200/80 bg-white/90 shadow-sm ring-1 ring-slate-200/70">
+      <CardHeader>
+        <CardTitle className="text-xl">自由实验</CardTitle>
+        <CardDescription>
+          这里不再按任务推进，而是让你围绕同一套主舞台自由重复创建钱包、发交易、挖矿并观察变化。
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-3 text-sm leading-6 text-slate-600">
+        <p>保留主舞台、对象详情和生命周期时间线，只把左侧切换成实验说明。</p>
+        <p>完整动作控件下沉到主工作区下方，避免重新回到旧页面那种纵向控制台堆叠。</p>
+      </CardContent>
+    </Card>
+  )
 
-  const handleTutorialComplete = () => {
-    localStorage.setItem('tutorialCompleted', 'true');
-    setShowTutorial(false);
-  };
+  const renderLearningWorkspace = () => (
+    <div className="space-y-6">
+      <div className="grid items-start gap-6 xl:grid-cols-[280px_minmax(0,1.55fr)_300px] 2xl:grid-cols-[300px_minmax(0,1.75fr)_320px]">
+        {activeMode === 'guided' ? <LabTaskPanel /> : renderSandboxSidebar()}
+        <BlockchainVisualization />
+        <BlockDetails />
+      </div>
+
+      {activeMode === 'sandbox' && <LabSandboxControls />}
+
+      <LabTimeline />
+    </div>
+  )
 
   return (
     <Layout>
-      <div className="space-y-8">
-        <DashboardHero />
-        <SystemStatCards />
-
-        <section className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-2xl font-semibold text-slate-900">快速开始</h3>
-            <p className="text-sm text-slate-600">按推荐顺序完成核心交互流程</p>
-          </div>
-
-          <QuickActions />
-
-          <div className="grid grid-cols-1 gap-6 xl:grid-cols-12">
-            <div className="space-y-6 xl:col-span-7">
-              <div className="h-[360px] md:h-[420px] w-full">
-                <Wallet />
-              </div>
-              <Transaction />
-            </div>
-            <div className="space-y-6 xl:col-span-5">
-              <div className="h-[360px] md:h-[420px] w-full">
-                <BlockMining />
-              </div>
-              <QuickStartChecklist />
-              <RecentActivityFeed />
-            </div>
-          </div>
-        </section>
-
-        <section className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-2xl font-semibold text-slate-900">网络模拟入口</h3>
-            <p className="text-sm text-slate-600">保留自动交易模拟入口，避免相对基线能力回退</p>
-          </div>
-          <NetworkSimulation />
-        </section>
-
-        <section className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-2xl font-semibold text-slate-900">主链舞台</h3>
-            <p className="text-sm text-slate-600">聚焦主链演进、分叉状态与区块结构化视图</p>
-          </div>
-          <div className="grid grid-cols-1 gap-6 xl:grid-cols-12">
-            <div className="space-y-6 xl:col-span-8">
-              <BlockchainVisualization />
-              <BlockchainForkVisualization />
-            </div>
-            <div className="xl:col-span-4">
-              {/* 先复用现有区块详情，作为 StructuredBlockDetails 的稳定插槽。 */}
-              <BlockDetails />
-            </div>
-          </div>
-        </section>
+      <div className="space-y-6">
+        <LabTopNav />
+        {(activeMode === 'guided' || activeMode === 'sandbox') && renderLearningWorkspace()}
+        {activeMode === 'advanced' && <LabAdvancedExperiments />}
+        {activeMode === 'glossary' && <LabGlossary />}
       </div>
-      {showTutorial && <Tutorial onComplete={handleTutorialComplete} />}
     </Layout>
-  );
-};
+  )
+}
 
-export default App;
+export default App

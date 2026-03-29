@@ -10,9 +10,18 @@ export default function StructuredBlockDetails() {
   }))
 
   const mainChain = chains.find((chain) => chain.isMain)
+  // 区块详情需要同时支持主链与分叉链选中态，而不是只在主链里查找。
+  const selectedChain = selectedBlockHash
+    ? chains.find((chain) => chain.blocks.some((block) => block.hash === selectedBlockHash))
+    : mainChain
   const selectedBlock =
-    mainChain?.blocks.find((block) => block.hash === selectedBlockHash) ??
+    selectedChain?.blocks.find((block) => block.hash === selectedBlockHash) ??
     mainChain?.blocks.at(-1)
+  const selectedChainLabel = selectedChain
+    ? selectedChain.isMain
+      ? '主链'
+      : '分叉链'
+    : '未选择'
 
   return (
     <Card className="rounded-[28px] border-slate-200/80 bg-white/90 shadow-sm ring-1 ring-slate-200/70">
@@ -27,6 +36,10 @@ export default function StructuredBlockDetails() {
           </div>
         ) : (
           <dl className="grid gap-3">
+            <div className={fieldClassName}>
+              <dt className="text-xs uppercase tracking-[0.2em] text-slate-500">所属链</dt>
+              <dd className="text-sm font-medium text-slate-900">{selectedChainLabel}</dd>
+            </div>
             <div className={fieldClassName}>
               <dt className="text-xs uppercase tracking-[0.2em] text-slate-500">区块高度</dt>
               <dd className="text-sm font-medium text-slate-900">{selectedBlock.index}</dd>
