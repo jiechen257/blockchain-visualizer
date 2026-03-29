@@ -1,0 +1,107 @@
+<h2>设计第 1 部分：信息架构与主界面骨架</h2>
+<p class="subtitle">目标是把“多角色协同”做成主舞台，把原先分散的功能模块收束成一条学习主线。</p>
+
+<div class="mockup">
+  <div class="mockup-header">推荐原型：引导式实验室 + 可切换自由实验</div>
+  <div class="mockup-body">
+    <div style="display:grid;gap:14px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:2px solid #111;border-radius:14px;background:#f8fafc;">
+        <div>
+          <div class="label">顶部导航</div>
+          <strong>区块链协同实验室</strong>
+          <div style="margin-top:4px;color:#555;">主线引导 | 自由实验 | 进阶机制实验</div>
+        </div>
+        <div style="padding:8px 12px;border:1px solid #bbb;border-radius:999px;background:#fff;">
+          当前模式：主线引导
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:320px 1fr 320px;gap:14px;">
+        <div style="padding:14px;border:1px solid #cbd5e1;border-radius:14px;background:#eef6ff;">
+          <div class="label">左侧</div>
+          <h3 style="margin-top:4px;">任务与章节面板</h3>
+          <div style="margin-top:10px;padding:10px;border-radius:10px;background:#fff;border:1px solid #dbeafe;">
+            当前任务：发起一笔交易
+          </div>
+          <div style="margin-top:10px;" class="placeholder">章节进度：钱包准备 → 广播 → 交易池 → 挖矿 → 上链</div>
+          <div style="margin-top:10px;" class="placeholder">关键提示 / 术语解释 / 为什么会这样</div>
+        </div>
+
+        <div style="padding:14px;border:2px solid #111;border-radius:14px;background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);">
+          <div class="label">中间主舞台</div>
+          <h3 style="margin-top:4px;">系统协同视图</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:12px;">
+            <div style="padding:10px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;">钱包 / 用户</div>
+            <div style="padding:10px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;">节点 / 交易池</div>
+            <div style="padding:10px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;">矿工 / 区块链</div>
+          </div>
+          <div class="placeholder" style="margin-top:12px;height:190px;">
+            交易卡片沿链路流动
+            <br>
+            钱包签名 → 广播到节点 → 进入 mempool → 被矿工打包 → 新区块接入主链
+          </div>
+          <div style="margin-top:12px;padding:10px;border-radius:10px;background:#fff7ed;border:1px solid #fed7aa;">
+            底部时间线：待签名 / 已广播 / 待打包 / 挖矿中 / 已确认
+          </div>
+        </div>
+
+        <div style="padding:14px;border:1px solid #fde68a;border-radius:14px;background:#fffaf0;">
+          <div class="label">右侧</div>
+          <h3 style="margin-top:4px;">对象详情检视器</h3>
+          <div class="placeholder" style="margin-top:10px;">当前选中：交易 #TX-01</div>
+          <div class="placeholder" style="margin-top:10px;">签名信息 / Hash / Nonce / 区块引用</div>
+          <div class="placeholder" style="margin-top:10px;">为什么此刻状态发生变化</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:2fr 1fr;gap:14px;">
+        <div style="padding:12px;border:1px dashed #94a3b8;border-radius:12px;background:#fcfcfd;">
+          <div class="label">自由实验入口</div>
+          完成引导后，同一套舞台切换为可编辑控件：钱包数量、矿工数量、交易频率、出块难度。
+        </div>
+        <div style="padding:12px;border:1px dashed #94a3b8;border-radius:12px;background:#fcfcfd;">
+          <div class="label">进阶实验</div>
+          分叉、网络传播延迟、多链对比单独进入，不干扰主线。
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>这一版核心变化</h3>
+  <div class="pros-cons">
+    <div class="pros">
+      <h4>从现在的产品里拿掉什么</h4>
+      <ul>
+        <li>不再把钱包、交易、挖矿、链视图并列成独立功能卡片。</li>
+        <li>不让网络模拟和分叉实验默认占据主页面心智。</li>
+      </ul>
+    </div>
+    <div class="pros">
+      <h4>新结构强调什么</h4>
+      <ul>
+        <li>中央只有一个主舞台，所有角色关系都在这里被看见。</li>
+        <li>左边负责“我现在要做什么”，右边负责“刚刚发生了什么”。</li>
+        <li>时间线把交易生命周期和 PoW 过程串成一条连续叙事。</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="options">
+  <div class="option" data-choice="yes" onclick="toggleSelect(this)">
+    <div class="letter">Y</div>
+    <div class="content">
+      <h3>这个骨架方向对</h3>
+      <p>继续进入下一部分：主线交互和关键状态流转。</p>
+    </div>
+  </div>
+  <div class="option" data-choice="revise" onclick="toggleSelect(this)">
+    <div class="letter">R</div>
+    <div class="content">
+      <h3>骨架需要调整</h3>
+      <p>告诉我想改哪一块，比如更强讲解、更少面板、或主舞台表现方式变化。</p>
+    </div>
+  </div>
+</div>

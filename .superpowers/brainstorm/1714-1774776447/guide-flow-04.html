@@ -1,0 +1,110 @@
+<h2>设计第 2 部分：主线交互与状态流转</h2>
+<p class="subtitle">这一部分决定它是不是一个真正能“教会人”的系统，而不只是一个漂亮的演示台。</p>
+
+<div class="mockup">
+  <div class="mockup-header">推荐主线：半自动任务推进</div>
+  <div class="mockup-body">
+    <div style="display:grid;gap:14px;">
+      <div style="padding:12px 14px;border:2px solid #111;border-radius:14px;background:#eef6ff;">
+        <div class="label">引导模式原则</div>
+        用户只触发关键动作，系统自动演示后续传播和计算过程；每一步都能暂停、回放、查看解释。
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(5, 1fr);gap:10px;">
+        <div style="padding:12px;border:1px solid #cbd5e1;border-radius:12px;background:#fff;">
+          <strong>1. 选择角色</strong>
+          <div style="margin-top:8px;font-size:14px;color:#555;">用户选一个钱包作为发送者。</div>
+          <div class="placeholder" style="margin-top:8px;height:90px;">系统说明：钱包不是链，钱包只是发起者</div>
+        </div>
+        <div style="padding:12px;border:1px solid #cbd5e1;border-radius:12px;background:#fff;">
+          <strong>2. 发起交易</strong>
+          <div style="margin-top:8px;font-size:14px;color:#555;">用户输入接收方和金额，点击发送。</div>
+          <div class="placeholder" style="margin-top:8px;height:90px;">签名完成，交易卡片生成</div>
+        </div>
+        <div style="padding:12px;border:1px solid #cbd5e1;border-radius:12px;background:#fff;">
+          <strong>3. 网络广播</strong>
+          <div style="margin-top:8px;font-size:14px;color:#555;">系统自动播放：交易从钱包传播到节点。</div>
+          <div class="placeholder" style="margin-top:8px;height:90px;">多个节点收到交易，进入 mempool</div>
+        </div>
+        <div style="padding:12px;border:1px solid #cbd5e1;border-radius:12px;background:#fff;">
+          <strong>4. 矿工打包</strong>
+          <div style="margin-top:8px;font-size:14px;color:#555;">用户点击“开始挖矿”，系统展示 Nonce 变化与竞争过程。</div>
+          <div class="placeholder" style="margin-top:8px;height:90px;">候选区块 / Hash 尝试 / 先找到有效解的矿工</div>
+        </div>
+        <div style="padding:12px;border:1px solid #cbd5e1;border-radius:12px;background:#fff;">
+          <strong>5. 上链确认</strong>
+          <div style="margin-top:8px;font-size:14px;color:#555;">系统自动把新区块接到主链，并更新交易状态。</div>
+          <div class="placeholder" style="margin-top:8px;height:90px;">交易状态变为 confirmed</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:14px;">
+        <div style="padding:14px;border:1px solid #cbd5e1;border-radius:14px;background:#fff;">
+          <div class="label">任务面板交互</div>
+          <div style="margin-top:8px;display:grid;gap:8px;">
+            <div style="padding:10px;border-radius:10px;background:#f8fafc;border:1px solid #e2e8f0;">当前目标：把一笔交易送上链</div>
+            <div style="padding:10px;border-radius:10px;background:#fff7ed;border:1px solid #fed7aa;">你来做：点击“开始挖矿”</div>
+            <div style="padding:10px;border-radius:10px;background:#f0fdf4;border:1px solid #bbf7d0;">刚刚发生：交易已进入节点交易池</div>
+            <div style="padding:10px;border-radius:10px;background:#f8fafc;border:1px dashed #cbd5e1;">可选：展开“为什么需要 PoW？”</div>
+          </div>
+        </div>
+        <div style="padding:14px;border:1px solid #fde68a;border-radius:14px;background:#fffaf0;">
+          <div class="label">控制条</div>
+          <div style="margin-top:8px;display:grid;gap:8px;">
+            <div style="padding:10px;border-radius:10px;background:#fff;border:1px solid #e5e7eb;">播放 / 暂停</div>
+            <div style="padding:10px;border-radius:10px;background:#fff;border:1px solid #e5e7eb;">单步前进</div>
+            <div style="padding:10px;border-radius:10px;background:#fff;border:1px solid #e5e7eb;">回看上一状态</div>
+            <div style="padding:10px;border-radius:10px;background:#fff;border:1px solid #e5e7eb;">切换解释层级：基础 / 深入</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding:14px;border:1px dashed #94a3b8;border-radius:14px;background:#fcfcfd;">
+        <div class="label">主线结束后的出口</div>
+        引导完成后弹出两条路：
+        <br>
+        继续自由实验：改参数重跑场景
+        <br>
+        进入进阶实验：看分叉、网络延迟、主链收敛
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>我建议保留的交互原则</h3>
+  <div class="pros-cons">
+    <div class="pros">
+      <h4>为什么用“半自动”</h4>
+      <ul>
+        <li>关键动作由用户触发，参与感够强，不会像看视频。</li>
+        <li>复杂传播和计算由系统自动演示，避免用户被机械操作拖散注意力。</li>
+        <li>可暂停和回放，适合学习者在因果节点上停下来理解。</li>
+      </ul>
+    </div>
+    <div class="cons">
+      <h4>要避免的风险</h4>
+      <ul>
+        <li>自动演示不能太快，否则用户会觉得“发生了，但没看懂”。</li>
+        <li>任务面板不能变成纯文案，需要和舞台状态强绑定。</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="options">
+  <div class="option" data-choice="yes" onclick="toggleSelect(this)">
+    <div class="letter">Y</div>
+    <div class="content">
+      <h3>这条主线对</h3>
+      <p>继续进入下一部分：核心界面模块和内容层级。</p>
+    </div>
+  </div>
+  <div class="option" data-choice="revise" onclick="toggleSelect(this)">
+    <div class="letter">R</div>
+    <div class="content">
+      <h3>主线节奏要调整</h3>
+      <p>告诉我哪里太快、太慢，或用户该自己做更多/更少。</p>
+    </div>
+  </div>
+</div>

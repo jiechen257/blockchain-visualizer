@@ -1,0 +1,124 @@
+<h2>区块链教学产品重构方向</h2>
+<p class="subtitle">这一轮先看首页与主体验结构，不讨论视觉皮肤，重点看“学习主线”是否成立。</p>
+
+<div class="cards">
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="mockup">
+        <div class="mockup-header">A. 剧情式章节课</div>
+        <div class="mockup-body">
+          <div style="display:grid;gap:12px;">
+            <div style="padding:10px;border:2px solid #111;border-radius:12px;background:#fff7ed;">
+              <strong>当前章节</strong>
+              <div style="margin-top:6px;">第 2 章：交易如何被网络接收</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1.8fr;gap:10px;">
+              <div style="padding:10px;border:1px solid #bbb;border-radius:10px;">
+                章节导航
+                <div class="placeholder" style="margin-top:8px;">钱包 → 节点 → 交易 → 挖矿 → 上链</div>
+              </div>
+              <div style="padding:10px;border:1px solid #bbb;border-radius:10px;">
+                动画舞台
+                <div class="placeholder" style="margin-top:8px;height:140px;">角色流转动画 / 高亮解释</div>
+              </div>
+            </div>
+            <div style="padding:10px;border:1px solid #bbb;border-radius:10px;">
+              讲解卡片 + 下一步
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A. 剧情式章节课</h3>
+      <p>把系统做成一节节可推进的课程，最强调“讲懂”，最弱化自由操作。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="mockup">
+        <div class="mockup-header">B. 引导 + 沙盒双模工作台</div>
+        <div class="mockup-body">
+          <div style="display:grid;gap:12px;">
+            <div style="display:grid;grid-template-columns:1.1fr 2fr 1.1fr;gap:10px;">
+              <div style="padding:10px;border:1px solid #bbb;border-radius:10px;background:#eef6ff;">
+                任务面板
+                <div class="placeholder" style="margin-top:8px;height:110px;">当前目标 / 下一步操作 / 学习提示</div>
+              </div>
+              <div style="padding:10px;border:2px solid #111;border-radius:10px;background:#f8fafc;">
+                系统舞台
+                <div class="placeholder" style="margin-top:8px;height:110px;">钱包、节点、矿工、区块的动态关系图</div>
+              </div>
+              <div style="padding:10px;border:1px solid #bbb;border-radius:10px;background:#fffaf0;">
+                详情检视器
+                <div class="placeholder" style="margin-top:8px;height:110px;">交易状态 / 哈希 / Nonce / 广播日志</div>
+              </div>
+            </div>
+            <div style="padding:10px;border:1px solid #bbb;border-radius:10px;">
+              时间线：发起交易 → 广播 → 待打包 → 竞争挖矿 → 上链确认
+            </div>
+            <div style="padding:10px;border:1px dashed #999;border-radius:10px;">
+              完成引导后切换到“自由实验”
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B. 引导 + 沙盒双模工作台</h3>
+      <p>先用任务面板带用户跑主线，再无缝切进实验模式。我推荐这个方向。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="mockup">
+        <div class="mockup-header">C. 网络控制台</div>
+        <div class="mockup-body">
+          <div style="display:grid;gap:10px;">
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;">
+              <div style="padding:8px;border:1px solid #bbb;border-radius:8px;">钱包</div>
+              <div style="padding:8px;border:1px solid #bbb;border-radius:8px;">交易池</div>
+              <div style="padding:8px;border:1px solid #bbb;border-radius:8px;">矿工</div>
+              <div style="padding:8px;border:1px solid #bbb;border-radius:8px;">链状态</div>
+            </div>
+            <div style="padding:10px;border:2px solid #111;border-radius:10px;">
+              主监控画布
+              <div class="placeholder" style="margin-top:8px;height:140px;">多节点网络 + 流量 + 链状态</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <div style="padding:10px;border:1px solid #bbb;border-radius:10px;">自动化参数</div>
+              <div style="padding:10px;border:1px solid #bbb;border-radius:10px;">事件日志</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C. 网络控制台</h3>
+      <p>最像“仿真系统”，信息密度高，自由度强，但对学习节奏不够友好。</p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>我的建议</h3>
+  <div class="pros-cons">
+    <div class="pros">
+      <h4>推荐 B 的原因</h4>
+      <ul>
+        <li>最符合你的目标：先讲清多角色协同，再支持自由实验。</li>
+        <li>可以把“交易生命周期”和“PoW 机制”自然挂在主舞台和时间线上。</li>
+        <li>进阶内容能收进实验区，不会重新变成功能拼盘。</li>
+      </ul>
+    </div>
+    <div class="cons">
+      <h4>需要注意</h4>
+      <ul>
+        <li>信息架构必须强约束，不然容易回退成三栏版功能堆叠。</li>
+        <li>引导模式和沙盒模式切换时，要避免状态断裂。</li>
+      </ul>
+    </div>
+  </div>
+</div>
